@@ -1,0 +1,66 @@
+body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+        background-color: #f4f4f4;
+    }
+.top_con{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#receipt{
+    display: flex;
+    justify-content: space-around;
+}
+
+.receipt-section {
+    margin-top: 40px; 
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd; 
+    border-radius: 10px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+}
+
+
+.bill {
+        background-color: white;
+        width: 300px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+    }
+.bill h5, .bill h2, .bill h4 {
+        text-align: center;
+        margin: 5px 0;
+    }
+.bill hr {
+        border: none;
+        border-top: 1px dashed #000;
+        margin: 10px 0;
+    }
+.bill span {
+        margin: 5px ;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    
+.bill table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+.bill th, .bill td {
+        text-align: left;
+        padding: 5px;
+    }
+.bill th {
+        border-bottom: 1px solid #000;
+    }
+.bill .total {
+        font-weight: bold;
+        border-top: 1px solid #000;
+    }

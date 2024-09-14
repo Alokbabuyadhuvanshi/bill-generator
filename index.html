@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Bill Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div style="text-align: center;">
+            <h1>Food Bill Generator</h1>
+        </div>
+        
+        <!-- Bill Form Section -->
+        <div class="top_con">
+            <form id="billForm">
+                <!-- Hotel Details -->
+                <div class="form-group">
+                    <label for="hotelName">Hotel Name:</label>
+                    <input type="text" id="hotelName" placeholder="Hotel Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="billNo">Bill No:</label>
+                    <input type="text" id="billNo" placeholder="Bill No" required>
+                </div>
+                <div class="form-group">
+                    <label for="billDate">Date:</label>
+                    <input type="date" id="billDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="billTime">Time:</label>
+                    <input type="time" id="billTime" required>
+                </div>
+                <div class="form-group">
+                    <label for="Cashier">Cashier:</label>
+                    <input type="text" id="Cashier" required>
+                </div>
+                <div class="form-group">
+                    <label for="hotelAddress">Hotel Address:</label>
+                    <textarea id="hotelAddress" placeholder="Hotel Address" required></textarea>
+                </div>
+
+                <!-- Product Details -->
+                <div id="productSection">
+                    <h2>Products</h2>
+                    <div class="product">
+                        <input type="text" class="productName" placeholder="Product Name" required>
+                        <input type="number" class="quantity" placeholder="Quantity" min="1" required>
+                        <input type="number" class="price" placeholder="Price" min="0" required>
+                        <span class="amount">0.00</span>
+                    </div>
+                </div>
+                <button type="button" id="addProduct">Add Product</button>
+
+                <!-- Total Amount -->
+                <div class="total-amount">
+                    <h3>Total: <span id="totalAmount">0.00</span></h3>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="button" id="generateBill">Generate Bill</button>
+            </form>
+        </div>
+
+        <!-- Receipt Section -->
+        <div id="receiptSection" class="receipt-section" style="text-align: center;">
+            <h2>Receipt</h2>
+            <div id="receipt"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
