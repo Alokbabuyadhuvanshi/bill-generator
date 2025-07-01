@@ -1,66 +1,455 @@
 body {
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
-        margin: 0;
-        padding: 20px;
-        background-color: #f4f4f4;
-    }
-.top_con{
-    display: flex;
-    justify-content: space-evenly;
-}
-
-#receipt{
-    display: flex;
-    justify-content: space-around;
-}
-
-.receipt-section {
-    margin-top: 40px; 
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
     padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd; 
-    border-radius: 10px; 
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    background-color: #f4f4f4;
 }
 
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
 
-.bill {
-        background-color: white;
-        width: 300px;
-        margin: 0 auto;
-        padding: 20px;
-        border: 1px solid #ddd;
-    }
-.bill h5, .bill h2, .bill h4 {
-        text-align: center;
-        margin: 5px 0;
-    }
-.bill hr {
-        border: none;
-        border-top: 1px dashed #000;
-        margin: 10px 0;
-    }
-.bill span {
-        margin: 5px ;
-        display: flex;
-        justify-content: space-between;
-    }
+.top_con {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
 
+#billForm {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.tax-config {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border-left: 4px solid #000;
+}
+
+.tax-config h3 {
+    margin-top: 0;
+    color: #000;
+}
+
+.product {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 5px;
+}
+
+.amount {
+    font-weight: bold;
+    color: #000;
+    text-align: right;
+}
+
+.total-summary {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 5px 0;
+}
+
+.total-row {
+    border-top: 2px solid #000;
+    padding-top: 15px;
+    margin-top: 15px;
+    font-size: 1.2em;
+    color: #000;
+}
+
+#addProduct,
+#generateBill {
+    background: #000;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px 5px;
+}
+
+.invoice-section {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+.invoice-controls {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 5px;
+}
+
+.download-btn,
+.edit-btn {
+    background: #000;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 10px;
+    font-size: 14px;
+}
+
+.edit-btn {
+    background: #666;
+}
+
+/* Template 1 - Professional Thermal Receipt (57mm) */
+.template1 {
+    font-family: 'Courier New', monospace;
+    background: #fff;
+    width: 57mm;
+    max-width: 57mm;
+    margin: 0 auto;
+    padding: 8px;
+    color: #000;
+    font-size: 9px;
+    line-height: 1.2;
+    border: 1px solid #000;
+}
+
+.template1 .header {
+    text-align: center;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #000;
+}
+
+.template1 .company-name {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+.template1 .address {
+    font-size: 8px;
+    margin-bottom: 2px;
+}
+
+.template1 .separator {
+    text-align: center;
+    margin: 8px 0;
+    font-size: 8px;
+}
+
+.template1 .bill-details {
+    margin-bottom: 8px;
+    font-size: 8px;
+}
+
+.template1 .items-header {
+    border-top: 1px dashed #000;
+    border-bottom: 1px dashed #000;
+    padding: 4px 0;
+    font-weight: bold;
+    font-size: 8px;
+}
+
+.template1 .item-row {
+    padding: 2px 0;
+    font-size: 8px;
+    border-bottom: 1px dotted #000;
+}
+
+.template1 .totals {
+    border-top: 1px dashed #000;
+    padding-top: 4px;
+    margin-top: 8px;
+    font-size: 8px;
+}
+
+.template1 .footer {
+    text-align: center;
+    margin-top: 8px;
+    padding-top: 4px;
+    border-top: 1px dashed #000;
+    font-size: 7px;
+}
+
+/* Template 2 - Restaurant Style Receipt (57mm) */
+.template2 {
+    font-family: 'Courier New', monospace;
+    background: #fff;
+    width: 57mm;
+    max-width: 57mm;
+    margin: 0 auto;
+    padding: 8px;
+    color: #000;
+    font-size: 9px;
+    border: 1px solid #000;
+}
+
+.template2 .header {
+    text-align: center;
+    margin-bottom: 8px;
+    padding: 8px;
+    border: 1px solid #000;
+}
+
+.template2 .company-name {
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.template2 .ticket-label {
+    background: #000;
+    color: white;
+    padding: 2px 8px;
+    margin: 8px 0;
+    text-align: center;
+    font-size: 8px;
+}
+
+.template2 .table-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 8px;
+}
+
+.template2 .items {
+    margin: 8px 0;
+}
+
+.template2 .item-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2px;
+    font-size: 8px;
+}
+
+.template2 .totals {
+    border-top: 1px solid #000;
+    padding-top: 4px;
+    margin-top: 8px;
+}
+
+.template2 .total-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2px;
+    font-size: 8px;
+}
+
+.template2 .grand-total {
+    font-weight: bold;
+    border-top: 1px solid #000;
+    padding-top: 2px;
+    font-size: 9px;
+}
+
+/* Template 3 - Retail Invoice (57mm) */
+.template3 {
+    font-family: Arial, sans-serif;
+    background: #fff;
+    width: 57mm;
+    max-width: 57mm;
+    margin: 0 auto;
+    padding: 8px;
+    color: #000;
+    font-size: 9px;
+    border: 1px solid #000;
+}
+
+.template3 .header {
+    text-align: center;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #000;
+}
+
+.template3 .company-name {
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.template3 .invoice-title {
+    font-weight: bold;
+    margin: 4px 0;
+    font-size: 9px;
+}
+
+.template3 .bill-info {
+    margin-bottom: 8px;
+    font-size: 8px;
+}
+
+.template3 .items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0;
+    font-size: 7px;
+}
+
+.template3 .items-table th,
+.template3 .items-table td {
+    padding: 2px 1px;
+    text-align: left;
+    border-bottom: 1px dotted #000;
+}
+
+.template3 .items-table th {
+    font-weight: bold;
+    border-bottom: 1px solid #000;
+}
+
+.template3 .totals {
+    border-top: 1px solid #000;
+    padding-top: 4px;
+    font-size: 8px;
+}
+
+/* Template 4 - Minimal Receipt (57mm) */
+.template4 {
+    font-family: Arial, sans-serif;
+    background: #fff;
+    width: 57mm;
+    max-width: 57mm;
+    margin: 0 auto;
+    padding: 8px;
+    color: #000;
+    font-size: 9px;
+    border: 1px solid #000;
+}
+
+.template4 .header {
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.template4 .company-name {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.template4 .bill-details {
+    margin-bottom: 8px;
+    font-size: 8px;
+}
+
+.template4 .items {
+    margin: 8px 0;
+}
+
+.template4 .item {
+    margin-bottom: 3px;
+    font-size: 8px;
+}
+
+.template4 .item-name {
+    font-weight: bold;
+}
+
+.template4 .item-details {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 8px;
+    font-size: 7px;
+}
+
+.template4 .totals {
+    border-top: 1px solid #000;
+    padding-top: 4px;
+    margin-top: 8px;
+    font-size: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
     
-.bill table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
+    .product {
+        grid-template-columns: 1fr;
+        gap: 5px;
     }
-.bill th, .bill td {
-        text-align: left;
-        padding: 5px;
+    
+    .template1, .template2, .template3, .template4 {
+        transform: scale(1.5);
+        transform-origin: top center;
+        margin-bottom: 50px;
     }
-.bill th {
-        border-bottom: 1px solid #000;
+}
+
+/* Print Styles */
+@media print {
+    .template1, .template2, .template3, .template4 {
+        width: 57mm !important;
+        max-width: 57mm !important;
+        margin: 0 !important;
+        padding: 8px !important;
+        box-shadow: none !important;
+        border: 1px solid #000 !important;
+        transform: none !important;
     }
-.bill .total {
-        font-weight: bold;
-        border-top: 1px solid #000;
+    
+    .invoice-controls {
+        display: none !important;
     }
+    
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}
