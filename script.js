@@ -410,28 +410,133 @@ function generateTemplate4(data) {
     `;
 }
 
+function generateTemplate3(data) {
+    const productsHTML = data.products.map(product => `
+        <tr>
+            <td>${product.name.substring(0, 12)}</td>
+            <td style="text-align: center;">${product.quantity}</td>
+            <td style="text-align: right;">${product.amount}</td>
+        </tr>
+    `).join('');
+
+    return `
+        <div class="template3">
+            <div class="header">
+                <div class="company-name">${data.hotelName}</div>
+                <div class="address">${data.hotelAddress.replace(/\n/g, '<br>')}</div>
+                ${data.phone ? `<div>PHONE: ${data.phone}</div>` : ''}
+                ${data.gstin ? `<div>GSTIN: ${data.gstin}</div>` : ''}
+                
+                <div class="invoice-title">Retail Invoice</div>
+            </div>
+            
+            <div class="bill-info">
+                <div>Date: ${data.billDate}, ${data.billTime}</div>
+                <div>${data.cashier}</div>
+                <div>Bill No: ${data.billNo}</div>
+                <div>Payment Mode: Cash</div>
+                <div>DR Ref: 2</div>
+            </div>
+            
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th style="text-align: center;">Qty</th>
+                        <th style="text-align: right;">Amt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${productsHTML}
+                </tbody>
+            </table>
+            
+            <div class="totals">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                    <span>Sub Total</span>
+                    <span>${data.subtotal}</span>
+                </div>
+                <div style="margin: 4px 0; font-size: 7px;">
+                    <div>(-) Discount: 0.00</div>
+                    ${data.gstRate > 0 ? `<div>CGST @ ${data.gstRate / 2}%: ${(parseFloat(data.gstAmount) / 2).toFixed(2)}</div>` : ''}
+                </div>
+                <div style="display: flex; justify-content: space-between; font-weight: bold; border-top: 1px solid #000; padding-top: 2px;">
+                    <span>TOTAL</span>
+                    <span>Rs ${data.totalAmount}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 2px;">
+                    <span>Cash:</span>
+                    <span>Rs ${data.totalAmount}</span>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
 function downloadPDF() {
     const { jsPDF } = window.jspdf;
     const invoiceElement = document.getElementById('invoiceContent');
-    
+
+    if (!invoiceElement) {
+        alert('No invoice content found. Please generate the bill first.');
+        return;
+    }
+
+    // Ensure the element is visible and has content
+    if (invoiceElement.style.display === 'none' || !invoiceElement.innerHTML.trim()) {
+        alert('Invoice content is not visible or empty. Please generate the bill first.');
+        return;
+    }
+
+    // Use a more reliable configuration for html2canvas with improved quality
     html2canvas(invoiceElement, {
-        scale: 3,
+        scale: 2, // Higher scale for better clarity
         useCORS: true,
         allowTaint: true,
-        width: 216, // 57mm in pixels at 96 DPI
-        height: invoiceElement.scrollHeight
+        backgroundColor: '#ffffff',
+        logging: false,
+        width: invoiceElement.scrollWidth,
+        height: invoiceElement.scrollHeight,
+        scrollX: 0,
+        scrollY: 0
     }).then(canvas => {
-        const imgData = canvas.toDataURL('image/png');
+        // Check if canvas has content
+        if (canvas.width === 0 || canvas.height === 0) {
+            alert('Failed to capture invoice content. Please try again.');
+            return;
+        }
+
+        const imgData = canvas.toDataURL('image/png', 1.0);
+
+        // Check if image data is valid
+        if (imgData === 'data:,' || imgData.length < 100) {
+            alert('Failed to generate image from invoice. Please try again.');
+            return;
+        }
+
+        // Calculate PDF dimensions and add a margin
+        const imgWidth = 57; // 57mm width for thermal receipt
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        const margin = 5; // 5mm margin
+
+        const pdfWidth = imgWidth + 2 * margin;
+        const pdfHeight = imgHeight + 2 * margin;
+
         const pdf = new jsPDF({
             orientation: 'portrait',
             unit: 'mm',
-            format: [57, Math.max(100, (canvas.height * 57) / canvas.width)]
+            format: [pdfWidth, Math.max(100, pdfHeight)]
         });
-        
-        pdf.addImage(imgData, 'PNG', 0, 0, 57, (canvas.height * 57) / canvas.width);
-        
+
+        // Add image with margin
+        pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
+
         const billNo = document.getElementById('billNo').value || 'receipt';
         pdf.save(`${billNo}_receipt.pdf`);
+
+    }).catch(error => {
+        console.error('Error generating PDF:', error);
+        alert('Failed to generate PDF. Please try again.');
     });
 }
 
