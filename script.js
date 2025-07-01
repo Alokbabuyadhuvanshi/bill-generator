@@ -488,7 +488,10 @@ function downloadPDF() {
         return;
     }
 
-    // Use a more reliable configuration for html2canvas with improved quality
+    // Get the element's bounding rectangle for accurate positioning
+    const rect = invoiceElement.getBoundingClientRect();
+    
+    // Use improved html2canvas configuration
     html2canvas(invoiceElement, {
         scale: 2, // Higher scale for better clarity
         useCORS: true,
@@ -498,7 +501,11 @@ function downloadPDF() {
         width: invoiceElement.scrollWidth,
         height: invoiceElement.scrollHeight,
         scrollX: 0,
-        scrollY: 0
+        scrollY: 0,
+        x: 0, // Explicitly set x position
+        y: 0, // Explicitly set y position
+        windowWidth: window.innerWidth,
+        windowHeight: window.innerHeight
     }).then(canvas => {
         // Check if canvas has content
         if (canvas.width === 0 || canvas.height === 0) {
@@ -514,12 +521,13 @@ function downloadPDF() {
             return;
         }
 
-   
-        const imgWidth = 51; 
+        // Calculate PDF dimensions with proper margins
+        const imgWidth = 57; // 57mm width for thermal receipt
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
-        const margin = 3; 
-        const pdfWidth = imgWidth + margin;
-        const pdfHeight = imgHeight + margin;
+        const margin = 3; // Reduced margin to 3mm
+
+        const pdfWidth = imgWidth + 2 * margin;
+        const pdfHeight = imgHeight + 2 * margin;
 
         const pdf = new jsPDF({
             orientation: 'portrait',
@@ -527,8 +535,8 @@ function downloadPDF() {
             format: [pdfWidth, Math.max(100, pdfHeight)]
         });
 
-      
-        pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
+        // Add image with proper positioning
+        pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight, '', 'FAST');
 
         const billNo = document.getElementById('billNo').value || 'receipt';
         pdf.save(`${billNo}_receipt.pdf`);
@@ -538,6 +546,7 @@ function downloadPDF() {
         alert('Failed to generate PDF. Please try again.');
     });
 }
+
 
 function editBill() {
     document.getElementById('invoiceSection').style.display = 'none';
