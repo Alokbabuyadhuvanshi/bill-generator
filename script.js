@@ -514,13 +514,12 @@ function downloadPDF() {
             return;
         }
 
-        // Calculate PDF dimensions and add a margin
-        const imgWidth = 51; // 57mm width for thermal receipt
+   
+        const imgWidth = 51; 
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
-        const margin = 3; // 5mm margin
-
-        const pdfWidth = imgWidth + 2 * margin;
-        const pdfHeight = imgHeight + 2 * margin;
+        const margin = 3; 
+        const pdfWidth = imgWidth + margin;
+        const pdfHeight = imgHeight + margin;
 
         const pdf = new jsPDF({
             orientation: 'portrait',
@@ -528,7 +527,7 @@ function downloadPDF() {
             format: [pdfWidth, Math.max(100, pdfHeight)]
         });
 
-        // Add image with margin
+      
         pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
 
         const billNo = document.getElementById('billNo').value || 'receipt';
