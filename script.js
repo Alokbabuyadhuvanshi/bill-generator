@@ -515,9 +515,9 @@ function downloadPDF() {
         }
 
         // Calculate PDF dimensions and add a margin
-        const imgWidth = 57; // 57mm width for thermal receipt
+        const imgWidth = 51; // 57mm width for thermal receipt
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
-        const margin = 5; // 5mm margin
+        const margin = 3; // 5mm margin
 
         const pdfWidth = imgWidth + 2 * margin;
         const pdfHeight = imgHeight + 2 * margin;
