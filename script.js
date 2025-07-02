@@ -482,18 +482,13 @@ function downloadPDF() {
         return;
     }
 
-    // Ensure the element is visible and has content
     if (invoiceElement.style.display === 'none' || !invoiceElement.innerHTML.trim()) {
         alert('Invoice content is not visible or empty. Please generate the bill first.');
         return;
     }
 
-    // Get the element's bounding rectangle for accurate positioning
-    const rect = invoiceElement.getBoundingClientRect();
-    
-    // Use improved html2canvas configuration
     html2canvas(invoiceElement, {
-        scale: 2, // Higher scale for better clarity
+        scale: 2,                // higher scale = better quality
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
@@ -502,12 +497,10 @@ function downloadPDF() {
         height: invoiceElement.scrollHeight,
         scrollX: 0,
         scrollY: 0,
-        x: 0, // Explicitly set x position
-        y: 0, // Explicitly set y position
-        windowWidth: window.innerWidth,
-        windowHeight: window.innerHeight
+        x: -5,
+        y: 0
+        
     }).then(canvas => {
-        // Check if canvas has content
         if (canvas.width === 0 || canvas.height === 0) {
             alert('Failed to capture invoice content. Please try again.');
             return;
@@ -515,16 +508,15 @@ function downloadPDF() {
 
         const imgData = canvas.toDataURL('image/png', 1.0);
 
-        // Check if image data is valid
         if (imgData === 'data:,' || imgData.length < 100) {
             alert('Failed to generate image from invoice. Please try again.');
             return;
         }
 
-        // Calculate PDF dimensions with proper margins
-        const imgWidth = 57; // 57mm width for thermal receipt
+        const maxPdfWidth = 80; // maximum width in mm
+        const imgWidth = Math.min(maxPdfWidth, canvas.width * 0.264583); // px to mm
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
-        const margin = 3; // Reduced margin to 3mm
+        const margin = 5; // margin in mm
 
         const pdfWidth = imgWidth + 2 * margin;
         const pdfHeight = imgHeight + 2 * margin;
@@ -535,18 +527,15 @@ function downloadPDF() {
             format: [pdfWidth, Math.max(100, pdfHeight)]
         });
 
-        // Add image with proper positioning
         pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight, '', 'FAST');
 
-        const billNo = document.getElementById('billNo').value || 'receipt';
+        const billNo = document.getElementById('billNo')?.value || 'receipt';
         pdf.save(`${billNo}_receipt.pdf`);
-
     }).catch(error => {
         console.error('Error generating PDF:', error);
         alert('Failed to generate PDF. Please try again.');
     });
 }
-
 
 function editBill() {
     document.getElementById('invoiceSection').style.display = 'none';
