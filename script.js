@@ -159,11 +159,8 @@ function generateTemplate1(data) {
     const productsHTML = data.products.map(product => `
         <div class="item-row">
             <div style="display: flex; justify-content: space-between;">
-                <span>${product.name.substring(0, 15)}</span>
-                <span>₹${product.amount}</span>
-            </div>
-            <div style="margin-left: 8px; font-size: 7px;">
-                ${product.quantity} P × ₹${parseFloat(product.price).toFixed(2)}
+                    <span>${product.name}</span>
+                    <span> ${product.quantity} × ${parseFloat(product.price).toFixed(2)} ₹${parseFloat(product.price*product.quantity).toFixed(2)}</span>
             </div>
         </div>
     `).join('');
@@ -228,7 +225,7 @@ function generateTemplate1(data) {
 function generateTemplate2(data) {
     const productsHTML = data.products.map(product => `
         <div class="item-line">
-            <span>-${product.quantity} ${product.name.substring(0, 15)}</span>
+            <span>-${product.quantity} ${product.name}</span>
             <span>${product.amount}</span>
         </div>
     `).join('');
@@ -297,7 +294,7 @@ function generateTemplate2(data) {
 function generateTemplate3(data) {
     const productsHTML = data.products.map(product => `
         <tr>
-            <td>${product.name.substring(0, 12)}</td>
+            <td>${product.name}</td>
             <td style="text-align: center;">${product.quantity}</td>
             <td style="text-align: right;">${product.amount}</td>
         </tr>
@@ -404,69 +401,6 @@ function generateTemplate4(data) {
                 <div style="display: flex; justify-content: space-between; font-weight: bold; border-top: 1px solid #000; padding-top: 2px;">
                     <span>TOTAL:</span>
                     <span>₹${data.totalAmount}</span>
-                </div>
-            </div>
-        </div>
-    `;
-}
-
-function generateTemplate3(data) {
-    const productsHTML = data.products.map(product => `
-        <tr>
-            <td>${product.name.substring(0, 12)}</td>
-            <td style="text-align: center;">${product.quantity}</td>
-            <td style="text-align: right;">${product.amount}</td>
-        </tr>
-    `).join('');
-
-    return `
-        <div class="template3">
-            <div class="header">
-                <div class="company-name">${data.hotelName}</div>
-                <div class="address">${data.hotelAddress.replace(/\n/g, '<br>')}</div>
-                ${data.phone ? `<div>PHONE: ${data.phone}</div>` : ''}
-                ${data.gstin ? `<div>GSTIN: ${data.gstin}</div>` : ''}
-                
-                <div class="invoice-title">Retail Invoice</div>
-            </div>
-            
-            <div class="bill-info">
-                <div>Date: ${data.billDate}, ${data.billTime}</div>
-                <div>${data.cashier}</div>
-                <div>Bill No: ${data.billNo}</div>
-                <div>Payment Mode: Cash</div>
-                <div>DR Ref: 2</div>
-            </div>
-            
-            <table class="items-table">
-                <thead>
-                    <tr>
-                        <th>Item</th>
-                        <th style="text-align: center;">Qty</th>
-                        <th style="text-align: right;">Amt</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${productsHTML}
-                </tbody>
-            </table>
-            
-            <div class="totals">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
-                    <span>Sub Total</span>
-                    <span>${data.subtotal}</span>
-                </div>
-                <div style="margin: 4px 0; font-size: 7px;">
-                    <div>(-) Discount: 0.00</div>
-                    ${data.gstRate > 0 ? `<div>CGST @ ${data.gstRate / 2}%: ${(parseFloat(data.gstAmount) / 2).toFixed(2)}</div>` : ''}
-                </div>
-                <div style="display: flex; justify-content: space-between; font-weight: bold; border-top: 1px solid #000; padding-top: 2px;">
-                    <span>TOTAL</span>
-                    <span>Rs ${data.totalAmount}</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; margin-top: 2px;">
-                    <span>Cash:</span>
-                    <span>Rs ${data.totalAmount}</span>
                 </div>
             </div>
         </div>
